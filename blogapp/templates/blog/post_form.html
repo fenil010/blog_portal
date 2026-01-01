@@ -1,0 +1,152 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+{% if form.instance.pk %}Edit Blog{% else %}Add New Blog{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="editor-wrapper">
+
+    <!-- HEADER -->
+    <div class="editor-header text-center">
+        <h1 class="fw-bold mb-1">
+            {% if form.instance.pk %}
+                Edit Your Blog
+            {% else %}
+                Create a New Blog
+            {% endif %}
+        </h1>
+        <p class="text-muted">
+            Write clearly. Share boldly.
+        </p>
+    </div>
+
+    <!-- EDITOR CARD -->
+    <div class="editor-card">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- TITLE -->
+            <div class="editor-group">
+                <label class="editor-label">Title</label>
+                {{ form.title }}
+            </div>
+
+            <!-- CATEGORY -->
+            <div class="editor-group">
+                <label class="editor-label">Category</label>
+                {{ form.category }}
+            </div>
+
+            <!-- CONTENT -->
+            <div class="editor-group">
+                <label class="editor-label">Content</label>
+                {{ form.content }}
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="editor-actions">
+                <a href="{% url 'home' %}" class="btn btn-outline-info btn-sm">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-accent px-4">
+                    {% if form.instance.pk %}
+                        Update Blog
+                    {% else %}
+                        Publish Blog
+                    {% endif %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- ===== PAGE-SPECIFIC STYLES ===== -->
+<style>
+/* Wrapper */
+.editor-wrapper {
+    max-width: 850px;
+    margin: 0 auto 80px;
+    animation: editorFade 0.6s ease;
+}
+
+/* Header */
+.editor-header {
+    margin-bottom: 30px;
+}
+
+/* Card */
+.editor-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    padding: 35px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Groups */
+.editor-group {
+    margin-bottom: 26px;
+}
+
+/* Labels */
+.editor-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+/* Inputs */
+.editor-card input,
+.editor-card select,
+.editor-card textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 15px;
+    transition: all 0.25s ease;
+}
+
+/* Content editor size */
+.editor-card textarea {
+    min-height: 260px;
+    resize: vertical;
+}
+
+/* Focus */
+.editor-card input:focus,
+.editor-card select:focus,
+.editor-card textarea:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35);
+    background: rgba(0, 0, 0, 0.45);
+}
+
+/* Actions */
+.editor-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+}
+
+/* Animation */
+@keyframes editorFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}
