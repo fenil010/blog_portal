@@ -1,54 +1,57 @@
-# =========================
+# ===============================
 # Python
-# =========================
+# ===============================
 __pycache__/
 *.py[cod]
-# Python
-*.pyc
-__pycache__/
+*.pyo
+*.pyd
+.Python
 
-# Django
-*.log
-db.sqlite3
-static/
-media/
+# ===============================
+# Virtual Environment
+# ===============================
+env/
+venv/
 .env
+.env.*
+pyvenv.cfg
 
-# VS Code
-.vscode/
-
-# macOS
-.DS_Store
-
-# Render build
-build/
-.env.production
-.env.local
-
-# Pipenv
-Pipfile.lock
-
-# Node
-node_modules/
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# =========================
-# VS Code / Editors
-# =========================
-.vscode/
-.idea/
-
-# =========================
-# Node / Frontend (if used)
-# =========================
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# =========================
-# Static files (optional)
-# =========================
+# ===============================
+# Django
+# ===============================
+db.sqlite3
+*.log
 staticfiles/
+media/
+
+# Django migrations cache
+**/migrations/__pycache__/
+
+# ===============================
+# VS Code
+# ===============================
+.vscode/
+
+# ===============================
+# macOS
+# ===============================
+.DS_Store
+
+# ===============================
+# Build / Deploy
+# ===============================
+build/
+dist/
+*.egg-info/
+
+# ===============================
+# Test / Coverage
+# ===============================
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ===============================
+# Environment examples (keep this tracked)
+# ===============================
+!.env.example
