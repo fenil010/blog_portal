@@ -1,51 +1,135 @@
 {% extends 'blog/base.html' %}
-{% block title %}My Blogs{% endblock %}
+{% block title %}My Blogs - MyBlog{% endblock %}
 
 {% block content %}
-<h2 class="text-center fw-bold mb-5">🧑‍💻 My Blogs</h2>
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 page-header">
+    <div>
+        <h1 class="text-4xl font-serif font-bold mb-2 text-espresso-800">My Blogs</h1>
+        <p class="text-espresso-500">Manage your published content</p>
+    </div>
+    <a href="{% url 'post_create' %}"
+        class="btn-shine inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cream-300 to-cream-400 text-espresso-700 font-semibold rounded-xl hover:shadow-lg hover:shadow-cream-300/30 transform hover:scale-105 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        New Post
+    </a>
+</div>
+
+<!-- Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 stats-row">
+    <div class="glass rounded-2xl p-6 text-center">
+        <div class="text-3xl font-serif font-bold gradient-text mb-1">{{ posts|length }}</div>
+        <div class="text-espresso-500 text-sm">Total Posts</div>
+    </div>
+    <div class="glass rounded-2xl p-6 text-center">
+        <div class="text-3xl font-serif font-bold gradient-text mb-1">{{ posts|length }}</div>
+        <div class="text-espresso-500 text-sm">Published</div>
+    </div>
+    <div class="glass rounded-2xl p-6 text-center">
+        <div class="text-3xl font-serif font-bold gradient-text mb-1">0</div>
+        <div class="text-espresso-500 text-sm">Drafts</div>
+    </div>
+    <div class="glass rounded-2xl p-6 text-center">
+        <div class="text-3xl font-serif font-bold gradient-text mb-1">1K+</div>
+        <div class="text-espresso-500 text-sm">Views</div>
+    </div>
+</div>
 
 {% if posts %}
-<div class="row">
+<!-- Blog List -->
+<div class="space-y-6 blog-list">
     {% for post in posts %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="fw-bold">{{ post.title }}</h5>
-
-                    <p class="text-info small mb-1">
-                        {{ post.category }} · {{ post.created_at|date:"M d, Y" }}
-                    </p>
-
-                    <p>{{ post.content|truncatewords:18 }}</p>
-                </div>
-
-                <div class="card-footer bg-transparent d-flex justify-content-between">
-                    <a href="{% url 'post_detail' post.id %}"
-                       class="btn btn-primary btn-sm">
-                        View
-                    </a>
-
-                    <div>
-                        <a href="{% url 'post_update' post.id %}"
-                           class="btn btn-warning btn-sm">
-                            Edit
-                        </a>
-                        <a href="{% url 'post_delete' post.id %}"
-                           class="btn btn-danger btn-sm">
-                            Delete
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div class="blog-item group glass rounded-2xl p-6 hover-lift flex flex-col md:flex-row gap-6">
+        <!-- Thumbnail -->
+        <div
+            class="w-full md:w-48 h-32 rounded-xl bg-gradient-to-br from-cream-200 via-cream-100 to-cream-300 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-10 h-10 text-espresso-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
         </div>
+
+        <!-- Content -->
+        <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="px-3 py-1 bg-cream-200 text-espresso-600 text-xs font-medium rounded-full">{{ post.category
+                    }}</span>
+                <span class="text-espresso-400 text-xs">{{ post.created_at|date:"M d, Y" }}</span>
+            </div>
+            <h3
+                class="text-xl font-serif font-bold mb-2 text-espresso-800 group-hover:text-cream-400 transition-colors">
+                {{ post.title }}</h3>
+            <p class="text-espresso-500 text-sm line-clamp-2">{{ post.content|truncatewords:20 }}</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex md:flex-col gap-3 justify-end">
+            <a href="{% url 'post_detail' post.id %}"
+                class="px-4 py-2 bg-cream-100 border border-cream-200 text-espresso-600 text-sm font-medium rounded-lg hover:bg-cream-200 transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                View
+            </a>
+            <a href="{% url 'post_update' post.id %}"
+                class="px-4 py-2 bg-amber-100 text-amber-700 text-sm font-medium rounded-lg hover:bg-amber-200 transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+            </a>
+            <a href="{% url 'post_delete' post.id %}"
+                class="px-4 py-2 bg-red-100 text-red-600 text-sm font-medium rounded-lg hover:bg-red-200 transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete
+            </a>
+        </div>
+    </div>
     {% endfor %}
 </div>
 {% else %}
-    <div class="text-center mt-5">
-        <h5>You haven’t posted anything yet 😶</h5>
-        <a href="{% url 'post_create' %}" class="btn btn-success mt-3">
-            Create Your First Blog
-        </a>
+<!-- Empty State -->
+<div class="text-center py-20 empty-state">
+    <div class="w-24 h-24 mx-auto mb-6 rounded-3xl bg-cream-200 flex items-center justify-center">
+        <svg class="w-12 h-12 text-espresso-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
     </div>
+    <h3 class="text-2xl font-serif font-bold mb-3 text-espresso-800">No posts yet</h3>
+    <p class="text-espresso-500 mb-8">Start writing and share your thoughts!</p>
+    <a href="{% url 'post_create' %}"
+        class="btn-shine inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cream-300 to-cream-400 text-espresso-700 font-semibold rounded-2xl">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Create First Post
+    </a>
+</div>
 {% endif %}
+
+<script>
+    gsap.from('.page-header', { opacity: 0, y: -30, duration: 0.8 });
+    gsap.from('.stats-row > div', { opacity: 0, y: 30, duration: 0.6, stagger: 0.1, delay: 0.2 });
+    gsap.from('.blog-item', { opacity: 0, x: -30, duration: 0.6, stagger: 0.15, delay: 0.4 });
+    gsap.from('.empty-state', { opacity: 0, scale: 0.9, duration: 0.8 });
+</script>
+
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
 {% endblock %}

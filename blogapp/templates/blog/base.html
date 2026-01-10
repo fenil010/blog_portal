@@ -1,179 +1,624 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MyBlog - A modern platform to share your thoughts and discover amazing stories">
     <title>{% block title %}MyBlog{% endblock %}</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Outfit', 'system-ui', 'sans-serif'],
+                        'serif': ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        cream: {
+                            50: '#F9F8F6',
+                            100: '#EFE9E3',
+                            200: '#D9CFC7',
+                            300: '#C9B59C',
+                            400: '#B8A080',
+                            500: '#A08B65',
+                        },
+                        espresso: {
+                            50: '#F5F3F0',
+                            100: '#E8E4DF',
+                            200: '#D1C9BF',
+                            300: '#B9AE9F',
+                            400: '#9A8B78',
+                            500: '#7D6D5C',
+                            600: '#635647',
+                            700: '#4A4035',
+                            800: '#312A24',
+                            900: '#1A1614',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'gradient': 'gradient 12s ease infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(201, 181, 156, 0.2)' },
+                            '100%': { boxShadow: '0 0 35px rgba(201, 181, 156, 0.4)' },
+                        },
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
     <style>
-        html, body {
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F9F8F6;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #C9B59C, #D9CFC7);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #B8A080, #C9B59C);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #7D6D5C 0%, #C9B59C 50%, #A08B65 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Animated Gradient Background */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #F9F8F6, #EFE9E3, #F5F3F0, #F9F8F6);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        /* Glass Effect - Warm Edition */
+        .glass {
+            background: rgba(249, 248, 246, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(217, 207, 199, 0.5);
+            box-shadow: 0 8px 32px rgba(74, 64, 53, 0.08);
+        }
+
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(217, 207, 199, 0.6);
+            box-shadow: 0 8px 32px rgba(74, 64, 53, 0.1);
+        }
+
+        /* Soft Shadows */
+        .soft-shadow {
+            box-shadow: 0 10px 40px rgba(74, 64, 53, 0.08), 0 4px 12px rgba(74, 64, 53, 0.05);
+        }
+
+        .soft-shadow-lg {
+            box-shadow: 0 20px 60px rgba(74, 64, 53, 0.12), 0 8px 24px rgba(74, 64, 53, 0.08);
+        }
+
+        /* Mesh Gradient Orbs - Warm */
+        .orb-1 {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 181, 156, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-2 {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(217, 207, 199, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-3 {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(239, 233, 227, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Hover Lift */
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(74, 64, 53, 0.15);
+        }
+
+        /* Button Shine Effect */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
             height: 100%;
-            margin: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
         }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            font-family: 'Segoe UI', sans-serif;
-            color: #f8fafc;
-            background: #020617;
-            overflow-x: hidden;
+        .btn-shine:hover::before {
+            left: 100%;
         }
 
-        #vanta-bg {
+        /* Line Animation */
+        .animated-underline {
+            position: relative;
+        }
+
+        .animated-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #C9B59C, #7D6D5C);
+            transition: width 0.3s ease;
+        }
+
+        .animated-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Elegant Border */
+        .elegant-border {
+            border: 1px solid rgba(201, 181, 156, 0.3);
+        }
+
+        /* Pattern Background */
+        .pattern-bg {
+            background-image: radial-gradient(circle at 1px 1px, rgba(201, 181, 156, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        /* Particle Canvas */
+        #particles-canvas {
             position: fixed;
             inset: 0;
-            z-index: -1;
-        }
-
-        main {
-            flex: 1;
-            padding-top: 90px;
-        }
-
-        .page {
-            animation: fadeSlide 0.8s ease;
-        }
-
-        @keyframes fadeSlide {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .navbar {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(14px);
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 18px;
-            color: #f8fafc;
-            transition: all 0.35s ease;
-            backdrop-filter: blur(12px);
-        }
-
-        .card:hover {
-            transform: translateY(-10px) scale(1.01);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-        }
-
-        .btn-accent {
-            background: linear-gradient(135deg, #38bdf8, #22d3ee);
-            border: none;
-            color: #020617;
-            font-weight: 600;
-            transition: all 0.25s ease;
-        }
-
-        .btn-accent:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
-        }
-
-        footer {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(14px);
-            color: #cbd5f5;
-            padding: 14px 0;
-            text-align: center;
+            z-index: 0;
+            pointer-events: none;
         }
     </style>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
-<body>
 
-<!-- 🌍 VANTA BACKGROUND -->
-<div id="vanta-bg"></div>
+<body class="gradient-bg pattern-bg min-h-screen text-espresso-800 font-sans overflow-x-hidden">
 
-<!-- ===== NAVBAR ===== -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
-    <div class="container">
+    <!-- Background Orbs -->
+    <div class="orb-1"></div>
+    <div class="orb-2"></div>
+    <div class="orb-3"></div>
 
-        <!-- LOGO -->
-        <a class="navbar-brand" href="{% url 'home' %}">
-            🌐 MyBlog
-        </a>
+    <!-- Particles Canvas -->
+    <canvas id="particles-canvas"></canvas>
 
-        <!-- RIGHT SIDE NAV -->
-        <div class="d-flex align-items-center ms-auto">
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-strong rounded-2xl mt-4 px-6 py-4">
+                <div class="flex items-center justify-between">
 
-            {% if user.is_authenticated %}
-                <!-- USERNAME -->
-                <span class="text-info fw-semibold me-2">
-                    {{ user.username }}
-                </span>
+                    <!-- Logo -->
+                    <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cream-300 to-cream-400 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 shadow-md">
+                            <svg class="w-5 h-5 text-espresso-700" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </div>
+                        <span class="text-2xl font-serif font-bold gradient-text">MyBlog</span>
+                    </a>
 
-                <!-- HOME (AFTER USERNAME) -->
-                <a href="{% url 'home' %}" class="btn btn-outline-info btn-sm me-2">
-                    Home
-                </a>
+                    <!-- Nav Links -->
+                    <div class="flex items-center gap-2">
+                        {% if user.is_authenticated %}
+                        <!-- User Avatar -->
+                        <div
+                            class="hidden md:flex items-center gap-3 px-4 py-2 rounded-xl bg-cream-100/50 border border-cream-200 mr-2">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-cream-300 to-cream-400 flex items-center justify-center text-sm font-bold text-espresso-700">
+                                {{ user.username|make_list|first|upper }}
+                            </div>
+                            <span class="text-sm font-medium text-espresso-600">{{ user.username }}</span>
+                        </div>
 
-                <!-- MY VLOG -->
-                <a href="{% url 'my_vlog' %}" class="btn btn-outline-info btn-sm me-2">
-                    My Vlog
-                </a>
+                        <a href="{% url 'home' %}"
+                            class="nav-link px-4 py-2 text-sm font-medium text-espresso-500 hover:text-espresso-800 rounded-lg hover:bg-cream-100 transition-all duration-300 animated-underline">
+                            Home
+                        </a>
 
-                <!-- ADD BLOG -->
-                <a href="{% url 'post_create' %}" class="btn btn-accent btn-sm me-2">
-                    + Add Blog
-                </a>
+                        <a href="{% url 'my_vlog' %}"
+                            class="nav-link px-4 py-2 text-sm font-medium text-espresso-500 hover:text-espresso-800 rounded-lg hover:bg-cream-100 transition-all duration-300 animated-underline">
+                            My Blogs
+                        </a>
 
-                <!-- LOGOUT -->
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-light btn-sm">
-                        Logout
-                    </button>
-                </form>
+                        <a href="{% url 'post_create' %}"
+                            class="btn-shine ml-2 px-5 py-2.5 bg-gradient-to-r from-cream-300 to-cream-400 text-espresso-700 text-sm font-semibold rounded-xl hover:shadow-lg hover:shadow-cream-300/50 transform hover:scale-105 transition-all duration-300">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4" />
+                                </svg>
+                                New Post
+                            </span>
+                        </a>
 
-            {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-info btn-sm">
-                    Login
-                </a>
-            {% endif %}
-
+                        <form method="post" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="ml-2 px-4 py-2.5 text-sm font-medium text-espresso-500 hover:text-espresso-800 border border-cream-200 hover:border-cream-300 rounded-xl hover:bg-cream-100 transition-all duration-300">
+                                Logout
+                            </button>
+                        </form>
+                        {% else %}
+                        <a href="{% url 'home' %}"
+                            class="nav-link px-4 py-2 text-sm font-medium text-espresso-500 hover:text-espresso-800 rounded-lg hover:bg-cream-100 transition-all duration-300">
+                            Explore
+                        </a>
+                        <a href="{% url 'login' %}"
+                            class="nav-link px-4 py-2 text-sm font-medium text-espresso-500 hover:text-espresso-800 rounded-lg hover:bg-cream-100 transition-all duration-300">
+                            Login
+                        </a>
+                        <a href="{% url 'signup' %}"
+                            class="btn-shine ml-2 px-5 py-2.5 bg-gradient-to-r from-cream-300 to-cream-400 text-espresso-700 text-sm font-semibold rounded-xl hover:shadow-lg hover:shadow-cream-300/50 transform hover:scale-105 transition-all duration-300">
+                            Get Started
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
+    </nav>
+
+    <!-- Toast Messages -->
+    {% if messages %}
+    <div id="toast-container" class="fixed top-28 right-6 z-50 space-y-3">
+        {% for message in messages %}
+        <div
+            class="toast-message glass-strong px-6 py-4 rounded-xl border-l-4 border-green-500 flex items-center gap-3 transform translate-x-full">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-espresso-700">{{ message }}</span>
+        </div>
+        {% endfor %}
     </div>
-</nav>
+    {% endif %}
 
-<!-- ===== MAIN CONTENT ===== -->
-<main class="container page">
-    {% block content %}{% endblock %}
-</main>
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10 min-h-screen pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
 
-<!-- ===== FOOTER ===== -->
-<footer>
-    © 2025 <strong>MyBlog</strong> · Powered by Django 🚀
-</footer>
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t border-cream-200 bg-cream-50/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
-<!-- ===== VANTA JS ===== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <a href="{% url 'home' %}" class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cream-300 to-cream-400 flex items-center justify-center shadow-md">
+                            <svg class="w-5 h-5 text-espresso-700" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-serif font-bold gradient-text">MyBlog</span>
+                    </a>
+                    <p class="text-espresso-500 text-sm leading-relaxed mb-6">
+                        Share your stories, ideas, and creativity with the world. Join our community of passionate
+                        writers.
+                    </p>
+                    <div class="flex gap-3">
+                        <a href="https://github.com/fenil" target="_blank"
+                            class="w-10 h-10 rounded-lg bg-cream-100 border border-cream-200 flex items-center justify-center text-espresso-500 hover:text-espresso-800 hover:bg-cream-200 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                        </a>
+                        <a href="https://linkedin.com/in/fenil" target="_blank"
+                            class="w-10 h-10 rounded-lg bg-cream-100 border border-cream-200 flex items-center justify-center text-espresso-500 hover:text-espresso-800 hover:bg-cream-200 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com" target="_blank"
+                            class="w-10 h-10 rounded-lg bg-cream-100 border border-cream-200 flex items-center justify-center text-espresso-500 hover:text-espresso-800 hover:bg-cream-200 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
 
-<script>
-    VANTA.GLOBE({
-        el: "#vanta-bg",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        color: 0x38bdf8,
-        backgroundColor: 0x020617
-    });
-</script>
+                <!-- Quick Links -->
+                <div>
+                    <h5 class="text-espresso-800 font-semibold mb-6">Quick Links</h5>
+                    <ul class="space-y-3">
+                        <li><a href="{% url 'home' %}"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Home</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'my_vlog' %}"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">My
+                                Blogs</a></li>
+                        <li><a href="{% url 'post_create' %}"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Write
+                                Post</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Login</a>
+                        </li>
+                        <li><a href="{% url 'signup' %}"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Sign
+                                Up</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h5 class="text-espresso-800 font-semibold mb-6">Categories</h5>
+                    <ul class="space-y-3">
+                        <li><a href="#"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Technology</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Lifestyle</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Travel</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-espresso-500 hover:text-espresso-800 text-sm transition-colors duration-300">Business</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h5 class="text-espresso-800 font-semibold mb-6">Stay Updated</h5>
+                    <p class="text-espresso-500 text-sm mb-4">Subscribe for the latest stories and updates.</p>
+                    <form class="flex gap-2">
+                        <input type="email" placeholder="Enter email"
+                            class="flex-1 px-4 py-2.5 bg-cream-100 border border-cream-200 rounded-xl text-sm text-espresso-800 placeholder-espresso-400 focus:outline-none focus:border-cream-300 focus:ring-2 focus:ring-cream-200 transition-colors duration-300">
+                        <button type="button"
+                            class="px-4 py-2.5 bg-gradient-to-r from-cream-300 to-cream-400 text-espresso-700 text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-cream-300/25 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom -->
+            <div
+                class="border-t border-cream-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-espresso-500 text-sm">© 2026 <span class="text-espresso-700 font-medium">MyBlog</span>.
+                    Crafted with ❤️ using
+                    Django</p>
+                <p class="text-espresso-500 text-sm">All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP Animations -->
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initial page load animation - using set + to for reliability
+        gsap.set('.nav-link', { opacity: 1 });
+        gsap.from('.nav-link', {
+            y: -15,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: 'power2.out',
+            delay: 0.2
+        });
+
+        // Toast animation
+        gsap.to('.toast-message', {
+            x: 0,
+            duration: 0.5,
+            ease: 'power3.out',
+            stagger: 0.1
+        });
+
+        // Auto-hide toasts after 4 seconds
+        setTimeout(() => {
+            gsap.to('.toast-message', {
+                x: '100%',
+                opacity: 0,
+                duration: 0.4,
+                ease: 'power2.in',
+                stagger: 0.1,
+                onComplete: function () {
+                    const container = document.getElementById('toast-container');
+                    if (container) container.remove();
+                }
+            });
+        }, 4000);
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.classList.add('backdrop-blur-xl');
+            } else {
+                navbar.classList.remove('backdrop-blur-xl');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Particle Animation - Warm Tones
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.3 + 0.1;
+                // Warm color palette for particles
+                const colors = ['201, 181, 156', '217, 207, 199', '184, 160, 128'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(40, Math.floor(window.innerWidth / 25));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+
+        // GSAP ScrollTrigger for footer
+        gsap.from('footer', {
+            scrollTrigger: {
+                trigger: 'footer',
+                start: 'top bottom',
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: 'power3.out'
+        });
+    </script>
 
 </body>
+
 </html>
