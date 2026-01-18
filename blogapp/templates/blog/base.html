@@ -243,6 +243,16 @@
             z-index: 0;
             pointer-events: none;
         }
+
+        /* Navbar Scrolled State */
+        #navbar.scrolled {
+            background: rgba(249, 248, 246, 0.95);
+            backdrop-filter: blur(20px);
+        }
+
+        #navbar.scrolled .glass-strong {
+            box-shadow: 0 4px 20px rgba(74, 64, 53, 0.12);
+        }
     </style>
 
     <!-- GSAP -->
@@ -261,9 +271,9 @@
     <canvas id="particles-canvas"></canvas>
 
     <!-- NAVBAR -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 pt-4 pb-2 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-strong rounded-2xl mt-4 px-6 py-4">
+            <div class="glass-strong rounded-2xl px-6 py-4 shadow-lg">
                 <div class="flex items-center justify-between">
 
                     <!-- Logo -->
@@ -357,7 +367,7 @@
     {% endif %}
 
     <!-- MAIN CONTENT -->
-    <main class="relative z-10 min-h-screen pt-32 pb-20">
+    <main class="relative z-10 min-h-screen pt-36 pb-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {% block content %}{% endblock %}
         </div>
@@ -527,10 +537,14 @@
             const navbar = document.getElementById('navbar');
             const currentScroll = window.pageYOffset;
 
-            if (currentScroll > 100) {
-                navbar.classList.add('backdrop-blur-xl');
+            if (currentScroll > 50) {
+                navbar.classList.add('scrolled');
+                navbar.style.paddingTop = '0.5rem';
+                navbar.style.paddingBottom = '0.25rem';
             } else {
-                navbar.classList.remove('backdrop-blur-xl');
+                navbar.classList.remove('scrolled');
+                navbar.style.paddingTop = '1rem';
+                navbar.style.paddingBottom = '0.5rem';
             }
 
             lastScroll = currentScroll;
